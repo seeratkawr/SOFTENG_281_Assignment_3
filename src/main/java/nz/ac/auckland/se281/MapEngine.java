@@ -53,5 +53,44 @@ public class MapEngine {
   }
 
   /** this method is invoked when the user run the command route. */
-  public void showRoute() {}
+  public void showRoute() {
+    boolean sourceValidInput = false;
+    String source = "";
+    boolean destinationValidInput = false;
+    String destination = "";
+
+    while (!sourceValidInput && !destinationValidInput) {
+      try {
+        MessageCli.INSERT_SOURCE.printMessage();
+        source = Utils.scanner.nextLine();
+        source = Utils.capitalizeFirstLetterOfEachWord(source);
+
+        if (!country.contains(source)) {
+          throw new InvalidCountryException(source);
+        }
+
+        sourceValidInput = true;
+      } catch (InvalidCountryException e) {
+        MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
+      }
+
+      try {
+        MessageCli.INSERT_DESTINATION.printMessage();
+        destination = Utils.scanner.nextLine();
+        destination = Utils.capitalizeFirstLetterOfEachWord(destination);
+
+        if (!country.contains(destination)) {
+          throw new InvalidCountryException(destination);
+        }
+
+        destinationValidInput = true;
+      } catch (InvalidCountryException e) {
+        MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
+      }
+    }
+
+    if (source.equals(destination)) {
+      MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
+    }
+  }
 }
