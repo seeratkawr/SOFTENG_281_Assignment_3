@@ -32,10 +32,12 @@ public class MapEngine {
     MessageCli.INSERT_COUNTRY.printMessage();
 
     String input = Utils.scanner.nextLine();
+    input = Utils.capitalizeFirstLetterOfEachWord(input);
 
     while (!country.contains(input)) {
       MessageCli.INVALID_COUNTRY.printMessage(input);
       input = Utils.scanner.nextLine();
+      input = Utils.capitalizeFirstLetterOfEachWord(input);
     }
 
     int index = country.indexOf(input);
