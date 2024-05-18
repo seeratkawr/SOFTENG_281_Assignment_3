@@ -29,15 +29,23 @@ public class MapEngine {
 
   /** this method is invoked when the user run the command info-country. */
   public void showInfoCountry() {
-    MessageCli.INSERT_COUNTRY.printMessage();
+    boolean validInput = false;
+    String input = "";
 
-    String input = Utils.scanner.nextLine();
-    input = Utils.capitalizeFirstLetterOfEachWord(input);
+    while (!validInput) {
+      try {
+        MessageCli.INSERT_COUNTRY.printMessage();
+        input = Utils.scanner.nextLine();
+        input = Utils.capitalizeFirstLetterOfEachWord(input);
 
-    while (!country.contains(input)) {
-      MessageCli.INVALID_COUNTRY.printMessage(input);
-      input = Utils.scanner.nextLine();
-      input = Utils.capitalizeFirstLetterOfEachWord(input);
+        if (!country.contains(input)) {
+          throw new InvalidCountryException(input);
+        }
+
+        validInput = true;
+      } catch (InvalidCountryException e) {
+        MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
+      }
     }
 
     int index = country.indexOf(input);
