@@ -2,8 +2,10 @@ package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /** This class is the main entry point. */
 public class MapEngine {
@@ -33,9 +35,10 @@ public class MapEngine {
 
     for (String a : adjacencies) {
       String[] parts = a.split(",");
-      String country = parts[0];
+      Country country = countryMap.get(parts[0]);
       for (int i = 1; i < parts.length; i++) {
-        graph.addEdge(country, parts[i]);
+        Country neighbour = countryMap.get(parts[i]);
+        graph.addEdge(country, neighbour);
       }
     }
   }
@@ -107,6 +110,45 @@ public class MapEngine {
 
     if (source.equals(destination)) {
       MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
+    } else {
+      Country sourceCountry = countryMap.get(source);
+      Country destinationCountry = countryMap.get(destination);
+      List<Country> path = graph.getShortestPath(sourceCountry, destinationCountry);
+      if (path.isEmpty()) {
+        MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
+      } else {
+        StringBuilder routeStr = new StringBuilder("[");
+        Set<String> continents = new HashSet<>();
+        int totalTaxFees = 0;
+
+        for (Country country : path) {
+          routeStr.append(country.getName());
+
+          if (!country.equals(destinationCountry)) {
+            routeStr.append(", ");
+          }
+
+          continents.add(country.getContinent());
+          totalTaxFees += Integer.parseInt(country.getTaxFees());
+        }
+
+        routeStr.append("]");
+
+        StringBuilder continentStr = new StringBuilder("[");
+        for (String continent : continents) {
+          continentStr.append(continent).append(", ");
+        }
+
+        if (continentStr.length() > 1) {
+          continentStr.setLength(continentStr.length() - 2);
+        }
+
+        continentStr.append("]");
+
+        MessageCli.ROUTE_INFO.printMessage(routeStr.toString());
+        MessageCli.CONTINENT_INFO.printMessage(continentStr.toString());
+        MessageCli.TAX_INFO.printMessage(String.valueOf(totalTaxFees));
+      }
     }
   }
 }
