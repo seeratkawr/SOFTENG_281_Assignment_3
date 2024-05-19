@@ -8,6 +8,7 @@ public class MapEngine {
   List<String> country = new ArrayList<>();
   List<String> continent = new ArrayList<>();
   List<String> fees = new ArrayList<>();
+  Graph graph = new Graph();
 
   public MapEngine() {
     // add other code here if you want
@@ -25,12 +26,21 @@ public class MapEngine {
       continent.add(parts[1]);
       fees.add(parts[2]);
     }
+
+    for (String a : adjacencies) {
+      String[] parts = a.split(",");
+      String country = parts[0];
+      for (int i = 1; i < parts.length; i++) {
+        graph.addEdge(country, parts[i]);
+      }
+    }
   }
 
   /** this method is invoked when the user run the command info-country. */
   public void showInfoCountry() {
     boolean validInput = false;
     String input = "";
+    int index;
 
     while (!validInput) {
       try {
@@ -48,7 +58,7 @@ public class MapEngine {
       }
     }
 
-    int index = country.indexOf(input);
+    index = country.indexOf(input);
     MessageCli.COUNTRY_INFO.printMessage(country.get(index), continent.get(index), fees.get(index));
   }
 
@@ -59,7 +69,7 @@ public class MapEngine {
     boolean destinationValidInput = false;
     String destination = "";
 
-    while (!sourceValidInput && !destinationValidInput) {
+    while (!sourceValidInput) {
       try {
         MessageCli.INSERT_SOURCE.printMessage();
         source = Utils.scanner.nextLine();
@@ -73,7 +83,9 @@ public class MapEngine {
       } catch (InvalidCountryException e) {
         MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
       }
+    }
 
+    while (!destinationValidInput) {
       try {
         MessageCli.INSERT_DESTINATION.printMessage();
         destination = Utils.scanner.nextLine();
