@@ -1,14 +1,9 @@
 package nz.ac.auckland.se281;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.Collections;
-
 
 public class Graph {
   private Map<String, List<String>> adjList;
@@ -23,6 +18,4 @@ public class Graph {
     adjList.get(country1).add(country2);
     adjList.get(country2).add(country1);
   }
-
-  
 }

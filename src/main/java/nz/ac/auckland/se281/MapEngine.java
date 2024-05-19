@@ -1,14 +1,15 @@
 package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /** This class is the main entry point. */
 public class MapEngine {
-  List<String> country = new ArrayList<>();
-  List<String> continent = new ArrayList<>();
-  List<String> fees = new ArrayList<>();
   Graph graph = new Graph();
+  private Map<String, Country> countryMap = new HashMap<>();
+  private List<Country> countries = new ArrayList<>();
 
   public MapEngine() {
     // add other code here if you want
@@ -22,9 +23,12 @@ public class MapEngine {
 
     for (String c : countries) {
       String[] parts = c.split(",");
-      country.add(parts[0]);
-      continent.add(parts[1]);
-      fees.add(parts[2]);
+      String country = parts[0];
+      String continent = parts[1];
+      String taxFees = parts[2];
+      Country countryObj = new Country(country, continent, taxFees);
+      countryMap.put(country, countryObj);
+      this.countries.add(countryObj);
     }
 
     for (String a : adjacencies) {
@@ -40,7 +44,6 @@ public class MapEngine {
   public void showInfoCountry() {
     boolean validInput = false;
     String input = "";
-    int index;
 
     while (!validInput) {
       try {
@@ -48,7 +51,7 @@ public class MapEngine {
         input = Utils.scanner.nextLine();
         input = Utils.capitalizeFirstLetterOfEachWord(input);
 
-        if (!country.contains(input)) {
+        if (!countryMap.containsKey(input)) {
           throw new InvalidCountryException(input);
         }
 
@@ -58,8 +61,9 @@ public class MapEngine {
       }
     }
 
-    index = country.indexOf(input);
-    MessageCli.COUNTRY_INFO.printMessage(country.get(index), continent.get(index), fees.get(index));
+    Country country = countryMap.get(input);
+    MessageCli.COUNTRY_INFO.printMessage(
+        country.getName(), country.getContinent(), country.getTaxFees());
   }
 
   /** this method is invoked when the user run the command route. */
@@ -75,7 +79,7 @@ public class MapEngine {
         source = Utils.scanner.nextLine();
         source = Utils.capitalizeFirstLetterOfEachWord(source);
 
-        if (!country.contains(source)) {
+        if (!countryMap.containsKey(source)) {
           throw new InvalidCountryException(source);
         }
 
@@ -91,7 +95,7 @@ public class MapEngine {
         destination = Utils.scanner.nextLine();
         destination = Utils.capitalizeFirstLetterOfEachWord(destination);
 
-        if (!country.contains(destination)) {
+        if (!countryMap.containsKey(destination)) {
           throw new InvalidCountryException(destination);
         }
 
