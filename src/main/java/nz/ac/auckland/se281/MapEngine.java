@@ -9,7 +9,7 @@ import java.util.Set;
 
 /** This class is the main entry point. */
 public class MapEngine {
-  Graph graph = new Graph();
+  private Graph graph = new Graph();
   private Map<String, Country> countryMap = new HashMap<>();
   private List<Country> countries = new ArrayList<>();
 
@@ -20,9 +20,11 @@ public class MapEngine {
 
   /** invoked one time only when constracting the MapEngine class. */
   private void loadMap() {
+    // read the countries and adjacencies from the files
     List<String> countries = Utils.readCountries();
     List<String> adjacencies = Utils.readAdjacencies();
 
+    // create the countries and add them to graph
     for (String c : countries) {
       String[] parts = c.split(",");
       String countryName = parts[0];
@@ -33,6 +35,7 @@ public class MapEngine {
       this.countries.add(country);
     }
 
+    // add the adjacencies to the graph
     for (String a : adjacencies) {
       String[] parts = a.split(",");
       Country country = countryMap.get(parts[0]);
@@ -48,22 +51,27 @@ public class MapEngine {
     boolean validInput = false;
     String input = "";
 
+    // validate the input
     while (!validInput) {
       try {
+        // ask the user to enter the country name and read it from the console
         MessageCli.INSERT_COUNTRY.printMessage();
         input = Utils.scanner.nextLine();
         input = Utils.capitalizeFirstLetterOfEachWord(input);
 
+        // check if the country is valid, throw a custom exception if not
         if (!countryMap.containsKey(input)) {
           throw new InvalidCountryException(input);
         }
 
         validInput = true;
       } catch (InvalidCountryException e) {
+        // print the error message if the custom exception is thrown
         MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
       }
     }
 
+    // get the country object from the map and print its information
     Country country = countryMap.get(input);
     MessageCli.COUNTRY_INFO.printMessage(
         country.getName(), country.getContinent(), country.getTaxFees());
@@ -76,73 +84,89 @@ public class MapEngine {
     boolean destinationValidInput = false;
     String destination = "";
 
+    // validate the source country input
     while (!sourceValidInput) {
       try {
+        // ask the user to enter the source country name and read it from the console
         MessageCli.INSERT_SOURCE.printMessage();
         source = Utils.scanner.nextLine();
         source = Utils.capitalizeFirstLetterOfEachWord(source);
 
+        // check if the source country is valid, if not throw a custom exception
         if (!countryMap.containsKey(source)) {
           throw new InvalidCountryException(source);
         }
 
         sourceValidInput = true;
       } catch (InvalidCountryException e) {
+        // print the error message if the custom exception is thrown
         MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
       }
     }
 
+    // validate the destination country input
     while (!destinationValidInput) {
       try {
+        // ask the user to enter the destination country name and read it from the console
         MessageCli.INSERT_DESTINATION.printMessage();
         destination = Utils.scanner.nextLine();
         destination = Utils.capitalizeFirstLetterOfEachWord(destination);
 
+        // check if the destination country is valid, if not throw a custom exception
         if (!countryMap.containsKey(destination)) {
           throw new InvalidCountryException(destination);
         }
 
         destinationValidInput = true;
       } catch (InvalidCountryException e) {
+        // print the error if the custom exception is thrown
         MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
       }
     }
 
+    // check if the source and destination countries are the same
     if (source.equals(destination)) {
       MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
 
     } else {
+      // get the source and destination country objects from the map and find the shortest path
       Country sourceCountry = countryMap.get(source);
       Country destinationCountry = countryMap.get(destination);
       List<Country> path = graph.getShortestPath(sourceCountry, destinationCountry);
 
+      // if the path is empty, print the message
       if (path.isEmpty()) {
         MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
 
+        // otherwise, print the route, continents, and tax fees information
       } else {
         StringBuilder routeStr = new StringBuilder("[");
         Set<String> continents = new LinkedHashSet<>();
         int totalTaxFees = 0;
         boolean firstCountry = true;
 
+        // iterate over the path, concatenate the route, continents, and calculate the total tax fees
         for (Country country : path) {
 
+          // if the country is not the first country, add the tax fees to the total
           if (!firstCountry) {
             totalTaxFees += Integer.parseInt(country.getTaxFees());
           }
           firstCountry = false;
 
+          // append the country name to the route string
           routeStr.append(country.getName());
-
           if (!country.equals(destinationCountry)) {
             routeStr.append(", ");
           }
 
+          // add the continent to the set of continents
           continents.add(country.getContinent());
         }
 
         routeStr.append("]");
 
+        // create a string representation of the continents
         StringBuilder continentStr = new StringBuilder("[");
         for (String continent : continents) {
           continentStr.append(continent).append(", ");
@@ -154,6 +178,7 @@ public class MapEngine {
 
         continentStr.append("]");
 
+        // print the route, continents, and tax fees information
         MessageCli.ROUTE_INFO.printMessage(routeStr.toString());
         MessageCli.CONTINENT_INFO.printMessage(continentStr.toString());
         MessageCli.TAX_INFO.printMessage(String.valueOf(totalTaxFees));
