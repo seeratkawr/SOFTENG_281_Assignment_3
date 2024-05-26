@@ -25,12 +25,12 @@ public class MapEngine {
 
     for (String c : countries) {
       String[] parts = c.split(",");
-      String country = parts[0];
+      String countryName = parts[0];
       String continent = parts[1];
       String taxFees = parts[2];
-      Country countryObj = new Country(country, continent, taxFees);
-      countryMap.put(country, countryObj);
-      this.countries.add(countryObj);
+      Country country = new Country(countryName, continent, taxFees);
+      countryMap.put(countryName, country);
+      this.countries.add(country);
     }
 
     for (String a : adjacencies) {
@@ -41,6 +41,31 @@ public class MapEngine {
         graph.addEdge(country, neighbour);
       }
     }
+
+    /*System.out.println("Country Map Contents:");
+    for (Map.Entry<String, Country> entry : countryMap.entrySet()) {
+      String countryName = entry.getKey();
+      Country country = entry.getValue();
+      System.out.println(
+          countryName
+              + " -> "
+              + country.getName()
+              + ", "
+              + country.getContinent()
+              + ", "
+              + country.getTaxFees());
+    }
+
+    System.out.println("\nAdjacency List Contents:");
+    for (Map.Entry<Country, List<Country>> entry : graph.adjNodes.entrySet()) {
+      Country country = entry.getKey();
+      List<Country> neighbors = entry.getValue();
+      System.out.print(country.getName() + " -> ");
+      for (Country neighbor : neighbors) {
+        System.out.print(neighbor.getName() + ", ");
+      }
+      System.out.println();
+    }*/
   }
 
   /** this method is invoked when the user run the command info-country. */
@@ -121,7 +146,13 @@ public class MapEngine {
         Set<String> continents = new HashSet<>();
         int totalTaxFees = 0;
 
+        boolean firstCountry = true;
         for (Country country : path) {
+          if (!firstCountry) {
+            totalTaxFees += Integer.parseInt(country.getTaxFees());
+          }
+          firstCountry = false;
+
           routeStr.append(country.getName());
 
           if (!country.equals(destinationCountry)) {

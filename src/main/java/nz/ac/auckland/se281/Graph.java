@@ -1,7 +1,6 @@
 package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,62 +21,58 @@ public class Graph {
   public void addEdge(Country country1, Country country2) {
     addNode(country1);
     addNode(country2);
-    adjNodes.get(country1).add(country2);
-    adjNodes.get(country2).add(country1);
+
+    if (!adjNodes.get(country1).contains(country2)) {
+      adjNodes.get(country1).add(country2);
+    }
   }
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    for (Country country : adjNodes.keySet()) {
-      sb.append(country.getName() + " -> ");
-      for (Country neighbour : adjNodes.get(country)) {
-        sb.append(neighbour.getName() + " ");
-      }
-      sb.append("\n");
-    }
-    return sb.toString();
-  }
-
-  public List<Country> getShortestPath(Country source, Country destination) {
-    if (!adjNodes.containsKey(source) || !adjNodes.containsKey(destination)) {
-      return Collections.emptyList();
-    }
-
+  public List<Country> breadthFirstTraversal(Country source, Country destination) {
+    Map<Country, Country> predecessors = new HashMap<>();
     List<Country> visited = new ArrayList<>();
     Queue<Country> queue = new LinkedList<>();
-    Map<Country, Country> previousNode = new HashMap<>();
+
     queue.add(source);
     visited.add(source);
 
     while (!queue.isEmpty()) {
-      Country current = queue.poll();
+      Country node = queue.poll();
 
-      if (current.equals(destination)) {
-        break;
-      }
-
-      for (Country neighbour : adjNodes.get(current)) {
+      for (Country neighbour : adjNodes.get(node)) {
+        if (neighbour == null) {
+          continue;
+        }
         if (!visited.contains(neighbour)) {
-          queue.add(neighbour);
+          predecessors.put(neighbour, node);
           visited.add(neighbour);
-          previousNode.put(neighbour, current);
+          queue.add(neighbour);
+        }
+
+        if (neighbour.equals(destination)) {
+          return constructPath(predecessors, source, destination);
         }
       }
     }
 
-    return constructPath(previousNode, source, destination);
+    return null;
   }
 
-  public List<Country> constructPath(
-      Map<Country, Country> previousNode, Country source, Country destination) {
-    List<Country> path = new ArrayList<>();
+  private List<Country> constructPath(
+      Map<Country, Country> predecessors, Country source, Country destination) {
+    List<Country> path = new LinkedList<>();
 
-    for (Country at = destination; at != null; at = previousNode.get(at)) {
-      path.add(at);
+    for (Country at = destination; at != null; at = predecessors.get(at)) {
+      path.add(0, at);
     }
 
-    Collections.reverse(path);
-    return path;
+    if (path.get(0).equals(source)) {
+      return path;
+    }
+
+    return null;
+  }
+
+  public List<Country> getShortestPath(Country source, Country destination) {
+    return breadthFirstTraversal(source, destination);
   }
 }
