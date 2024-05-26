@@ -2,7 +2,7 @@ package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -118,7 +118,8 @@ public class MapEngine {
         MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
       } else {
         StringBuilder routeStr = new StringBuilder("[");
-        Set<String> continents = new HashSet<>();
+        Set<String> continentsSet = new LinkedHashSet<>();
+        List<String> continentsList = new ArrayList<>();
         int totalTaxFees = 0;
 
         boolean firstCountry = true;
@@ -134,13 +135,16 @@ public class MapEngine {
             routeStr.append(", ");
           }
 
-          continents.add(country.getContinent());
+          String continent = country.getContinent();
+          if (continentsSet.add(continent)) {
+            continentsList.add(continent);
+          }
         }
 
         routeStr.append("]");
 
         StringBuilder continentStr = new StringBuilder("[");
-        for (String continent : continents) {
+        for (String continent : continentsList) {
           continentStr.append(continent).append(", ");
         }
 
