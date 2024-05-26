@@ -110,20 +110,23 @@ public class MapEngine {
 
     if (source.equals(destination)) {
       MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
+
     } else {
       Country sourceCountry = countryMap.get(source);
       Country destinationCountry = countryMap.get(destination);
       List<Country> path = graph.getShortestPath(sourceCountry, destinationCountry);
+
       if (path.isEmpty()) {
         MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
+
       } else {
         StringBuilder routeStr = new StringBuilder("[");
-        Set<String> continentsSet = new LinkedHashSet<>();
-        List<String> continentsList = new ArrayList<>();
+        Set<String> continents = new LinkedHashSet<>();
         int totalTaxFees = 0;
-
         boolean firstCountry = true;
+
         for (Country country : path) {
+
           if (!firstCountry) {
             totalTaxFees += Integer.parseInt(country.getTaxFees());
           }
@@ -135,16 +138,13 @@ public class MapEngine {
             routeStr.append(", ");
           }
 
-          String continent = country.getContinent();
-          if (continentsSet.add(continent)) {
-            continentsList.add(continent);
-          }
+          continents.add(country.getContinent());
         }
 
         routeStr.append("]");
 
         StringBuilder continentStr = new StringBuilder("[");
-        for (String continent : continentsList) {
+        for (String continent : continents) {
           continentStr.append(continent).append(", ");
         }
 
