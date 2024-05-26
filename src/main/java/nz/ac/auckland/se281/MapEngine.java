@@ -41,31 +41,6 @@ public class MapEngine {
         graph.addEdge(country, neighbour);
       }
     }
-
-    /*System.out.println("Country Map Contents:");
-    for (Map.Entry<String, Country> entry : countryMap.entrySet()) {
-      String countryName = entry.getKey();
-      Country country = entry.getValue();
-      System.out.println(
-          countryName
-              + " -> "
-              + country.getName()
-              + ", "
-              + country.getContinent()
-              + ", "
-              + country.getTaxFees());
-    }
-
-    System.out.println("\nAdjacency List Contents:");
-    for (Map.Entry<Country, List<Country>> entry : graph.adjNodes.entrySet()) {
-      Country country = entry.getKey();
-      List<Country> neighbors = entry.getValue();
-      System.out.print(country.getName() + " -> ");
-      for (Country neighbor : neighbors) {
-        System.out.print(neighbor.getName() + ", ");
-      }
-      System.out.println();
-    }*/
   }
 
   /** this method is invoked when the user run the command info-country. */
@@ -160,7 +135,6 @@ public class MapEngine {
           }
 
           continents.add(country.getContinent());
-          totalTaxFees += Integer.parseInt(country.getTaxFees());
         }
 
         routeStr.append("]");
