@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Queue;
 
 /**
- * This class represents a graph data structure, which is used to store the countries and their
- * adjacent countries.
- */
+* This class represents a graph data structure, which is used to store the countries and their
+* adjacent countries.
+*/
 public class Graph {
   private Map<Country, List<Country>> adjNodes;
 
@@ -20,20 +20,20 @@ public class Graph {
   }
 
   /**
-   * Add a node to the graph.
-   *
-   * @param country the country to be added
-   */
+  * Add a node to the graph.
+  *
+  * @param country the country to be added
+  */
   public void addNode(Country country) {
     adjNodes.putIfAbsent(country, new ArrayList<>());
   }
 
   /**
-   * Add an edge between two countries.
-   *
-   * @param country1 the first country
-   * @param country2 the second country
-   */
+  * Add an edge between two countries.
+  *
+  * @param country1 the first country
+  * @param country2 the second country
+  */
   public void addEdge(Country country1, Country country2) {
     addNode(country1);
     addNode(country2);
@@ -44,12 +44,12 @@ public class Graph {
   }
 
   /**
-   * Perform a breadth-first search to find the shortest path between two countries.
-   *
-   * @param source source country to start the search
-   * @param destination destination country to end the search
-   * @returns the shortest path between the source and destination countries
-   */
+  * Perform a breadth-first search to find the shortest path between two countries.
+  *
+  * @param source source country to start the search
+  * @param destination destination country to end the search
+  * @returns the shortest path between the source and destination countries
+  */
   public List<Country> breadthFirstSearch(Country source, Country destination) {
     // Initialise the data structures
     Map<Country, Country> predecessors = new HashMap<>();
@@ -89,13 +89,13 @@ public class Graph {
   }
 
   /**
-   * Construct the path between two countries.
-   *
-   * @param predecessors the map of predecessors
-   * @param source the source country
-   * @param destination the destination country
-   * @returns the path between the source and destination countries
-   */
+  * Construct the path between two countries.
+  *
+  * @param predecessors the map of predecessors
+  * @param source the source country
+  * @param destination the destination country
+  * @returns the path between the source and destination countries
+  */
   private List<Country> constructPath(
       Map<Country, Country> predecessors, Country source, Country destination) {
     List<Country> path = new LinkedList<>();
@@ -115,12 +115,12 @@ public class Graph {
   }
 
   /**
-   * Get the shortest path between two countries.
-   *
-   * @param source the source country
-   * @param destination the destination country
-   * @returns the shortest path between the source and destination countries
-   */
+  * Get the shortest path between two countries.
+  *
+  * @param source the source country
+  * @param destination the destination country
+  * @returns the shortest path between the source and destination countries
+  */
   public List<Country> getShortestPath(Country source, Country destination) {
     // Check if the source and destination countries are the same
     return breadthFirstSearch(source, destination);

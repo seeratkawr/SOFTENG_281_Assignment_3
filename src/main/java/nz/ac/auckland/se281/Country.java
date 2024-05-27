@@ -7,12 +7,12 @@ public class Country {
   private String taxFees;
 
   /**
-   * Constructor for creating a new country.
-   *
-   * @param name the name of the country
-   * @param continent the continent in which the country is located
-   * @param taxFees the tax fees of the country
-   */
+  * Constructor for creating a new country.
+  *
+  * @param name the name of the country
+  * @param continent the continent in which the country is located
+  * @param taxFees the tax fees of the country
+  */
   public Country(String name, String continent, String taxFees) {
     this.name = name;
     this.continent = continent;
@@ -20,28 +20,28 @@ public class Country {
   }
 
   /**
-   * Get the name of the country.
-   *
-   * @returns the name of the country
-   */
+  * Get the name of the country.
+  *
+  * @returns the name of the country
+  */
   public String getName() {
     return name;
   }
 
   /**
-   * Get the continent in which the country is located.
-   *
-   * @return the continent in which the country is located
-   */
+  * Get the continent in which the country is located.
+  *
+  * @return the continent in which the country is located
+  */
   public String getContinent() {
     return continent;
   }
 
   /**
-   * Get the tax fees of the country.
-   *
-   * @return the tax fees of the country
-   */
+  * Get the tax fees of the country.
+  *
+  * @return the tax fees of the country
+  */
   public String getTaxFees() {
     return taxFees;
   }
