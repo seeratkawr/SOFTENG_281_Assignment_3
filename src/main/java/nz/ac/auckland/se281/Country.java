@@ -8,7 +8,7 @@ public class Country {
 
   /**
    * Constructor for creating a new country.
-   * 
+   *
    * @param name the name of the country
    * @param continent the continent in which the country is located
    * @param taxFees the tax fees of the country
@@ -30,7 +30,7 @@ public class Country {
 
   /**
    * Get the continent in which the country is located.
-   * 
+   *
    * @return the continent in which the country is located
    */
   public String getContinent() {

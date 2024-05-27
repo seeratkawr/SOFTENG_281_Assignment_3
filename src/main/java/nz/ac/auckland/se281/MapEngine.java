@@ -30,6 +30,7 @@ public class MapEngine {
       String countryName = parts[0];
       String continent = parts[1];
       String taxFees = parts[2];
+
       Country country = new Country(countryName, continent, taxFees);
       countryMap.put(countryName, country);
       this.countries.add(country);
@@ -39,6 +40,7 @@ public class MapEngine {
     for (String a : adjacencies) {
       String[] parts = a.split(",");
       Country country = countryMap.get(parts[0]);
+
       for (int i = 1; i < parts.length; i++) {
         Country neighbour = countryMap.get(parts[i]);
         graph.addEdge(country, neighbour);
@@ -66,6 +68,7 @@ public class MapEngine {
 
         input = capitalisedInput;
         validInput = true;
+
       } catch (InvalidCountryException e) {
         // print the error message if the custom exception is thrown
         MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
@@ -121,6 +124,7 @@ public class MapEngine {
 
         destination = capitalisedInput;
         destinationValidInput = true;
+
       } catch (InvalidCountryException e) {
         // print the error if the custom exception is thrown
         MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
@@ -151,7 +155,6 @@ public class MapEngine {
         // iterate over the path, concatenate the route, continents, and calculate the total tax
         // fees
         for (Country country : path) {
-
           // if the country is not the first country, add the tax fees to the total
           if (!firstCountry) {
             totalTaxFees += Integer.parseInt(country.getTaxFees());
