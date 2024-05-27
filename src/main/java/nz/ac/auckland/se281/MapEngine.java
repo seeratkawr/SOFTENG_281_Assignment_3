@@ -57,13 +57,14 @@ public class MapEngine {
         // ask the user to enter the country name and read it from the console
         MessageCli.INSERT_COUNTRY.printMessage();
         input = Utils.scanner.nextLine();
-        input = Utils.capitalizeFirstLetterOfEachWord(input);
+        String capitalisedInput = Utils.capitalizeFirstLetterOfEachWord(input);
 
         // check if the country is valid, throw a custom exception if not
-        if (!countryMap.containsKey(input)) {
-          throw new InvalidCountryException(input);
+        if (!countryMap.containsKey(capitalisedInput)) {
+          throw new InvalidCountryException(capitalisedInput);
         }
 
+        input = capitalisedInput;
         validInput = true;
       } catch (InvalidCountryException e) {
         // print the error message if the custom exception is thrown
@@ -89,14 +90,15 @@ public class MapEngine {
       try {
         // ask the user to enter the source country name and read it from the console
         MessageCli.INSERT_SOURCE.printMessage();
-        source = Utils.scanner.nextLine();
-        source = Utils.capitalizeFirstLetterOfEachWord(source);
+        String input = Utils.scanner.nextLine();
+        String capitalisedInput = Utils.capitalizeFirstLetterOfEachWord(input);
 
         // check if the source country is valid, if not throw a custom exception
-        if (!countryMap.containsKey(source)) {
-          throw new InvalidCountryException(source);
+        if (!countryMap.containsKey(capitalisedInput)) {
+          throw new InvalidCountryException(capitalisedInput);
         }
 
+        source = capitalisedInput;
         sourceValidInput = true;
       } catch (InvalidCountryException e) {
         // print the error message if the custom exception is thrown
@@ -109,14 +111,15 @@ public class MapEngine {
       try {
         // ask the user to enter the destination country name and read it from the console
         MessageCli.INSERT_DESTINATION.printMessage();
-        destination = Utils.scanner.nextLine();
-        destination = Utils.capitalizeFirstLetterOfEachWord(destination);
+        String input = Utils.scanner.nextLine();
+        String capitalisedInput = Utils.capitalizeFirstLetterOfEachWord(input);
 
         // check if the destination country is valid, if not throw a custom exception
-        if (!countryMap.containsKey(destination)) {
-          throw new InvalidCountryException(destination);
+        if (!countryMap.containsKey(capitalisedInput)) {
+          throw new InvalidCountryException(capitalisedInput);
         }
 
+        destination = capitalisedInput;
         destinationValidInput = true;
       } catch (InvalidCountryException e) {
         // print the error if the custom exception is thrown
@@ -145,7 +148,8 @@ public class MapEngine {
         int totalTaxFees = 0;
         boolean firstCountry = true;
 
-        // iterate over the path, concatenate the route, continents, and calculate the total tax fees
+        // iterate over the path, concatenate the route, continents, and calculate the total tax
+        // fees
         for (Country country : path) {
 
           // if the country is not the first country, add the tax fees to the total

@@ -7,7 +7,7 @@ public class Country {
   private String taxFees;
 
   /**
-   * Create a new country. 
+   * Constructor for creating a new country.
    * 
    * @param name the name of the country
    * @param continent the continent in which the country is located
@@ -21,7 +21,7 @@ public class Country {
 
   /**
    * Get the name of the country.
-   * 
+   *
    * @returns the name of the country
    */
   public String getName() {
@@ -31,7 +31,7 @@ public class Country {
   /**
    * Get the continent in which the country is located.
    * 
-   * @returns the continent of the country
+   * @return the continent in which the country is located
    */
   public String getContinent() {
     return continent;
@@ -39,16 +39,14 @@ public class Country {
 
   /**
    * Get the tax fees of the country.
-   * 
-   * @returns the tax fees of the country
+   *
+   * @return the tax fees of the country
    */
   public String getTaxFees() {
     return taxFees;
   }
 
-  /**
-   * Set the name of the country.
-   */
+  /** Set the name of the country. */
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -57,26 +55,32 @@ public class Country {
     return result;
   }
 
-  /**
-   * Check if two countries are equal.
-   */
+  /** Check if two countries are equal. */
   @Override
   public boolean equals(Object obj) {
+    // If the object is the same as this country, return true, as this country has already been
+    // initialised
     if (this == obj) {
       return true;
     }
+    // If the object is null, return false, as this country has not been initialised
     if (obj == null) {
       return false;
     }
+    // If the object is not an instance of the Country class, return false, as the object is not a
+    // country
     if (getClass() != obj.getClass()) {
       return false;
     }
+    // Cast the object to a country
     Country other = (Country) obj;
     if (name == null) {
       if (other.name != null) {
         return false;
       }
-    } else if (!name.equals(other.name)) return false;
+    } else if (!name.equals(other.name)) {
+      return false;
+    }
     return true;
   }
 }
