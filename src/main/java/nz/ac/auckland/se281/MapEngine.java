@@ -66,66 +66,60 @@ public class MapEngine {
     // check if the source and destination countries are the same
     if (source.equals(destination)) {
       MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
-
-    } else {
-      // get the source and destination country objects from the map and find the shortest path
-      Country sourceCountry = countryMap.get(source);
-      Country destinationCountry = countryMap.get(destination);
-      List<Country> path = graph.getShortestPath(sourceCountry, destinationCountry);
-
-      // if the path is empty, print the message
-      if (path.isEmpty()) {
-        MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
-
-        // otherwise, print the route, continents, and tax fees information
-      } else {
-        StringBuilder routeStr = new StringBuilder("[");
-        Set<String> continents = new LinkedHashSet<>();
-        int totalTaxFees = 0;
-        boolean firstCountry = true;
-
-        // iterate over the path, concatenate the route, continents, and calculate the total tax
-        // fees
-        for (Country country : path) {
-          // if the country is not the first country, add the tax fees to the total
-          if (!firstCountry) {
-            totalTaxFees += Integer.parseInt(country.getTaxFees());
-          }
-          firstCountry = false;
-
-          // append the country name to the route string
-          routeStr.append(country.getName());
-          if (!country.equals(destinationCountry)) {
-            routeStr.append(", ");
-          }
-
-          // add the continent to the set of continents
-          continents.add(country.getContinent());
-        }
-
-        routeStr.append("]");
-
-        // create a string representation of the continents
-        StringBuilder continentStr = new StringBuilder("[");
-        for (String continent : continents) {
-          continentStr.append(continent).append(", ");
-        }
-
-        if (continentStr.length() > 1) {
-          continentStr.setLength(continentStr.length() - 2);
-        }
-
-        continentStr.append("]");
-
-        // print the route, continents, and tax fees information
-        MessageCli.ROUTE_INFO.printMessage(routeStr.toString());
-        MessageCli.CONTINENT_INFO.printMessage(continentStr.toString());
-        MessageCli.TAX_INFO.printMessage(String.valueOf(totalTaxFees));
-      }
+      return;
     }
+
+    // get the source and destination country objects from the map and find the shortest path
+    Country sourceCountry = countryMap.get(source);
+    Country destinationCountry = countryMap.get(destination);
+    List<Country> path = graph.getShortestPath(sourceCountry, destinationCountry);
+
+    // initialise the route string, continents set, and total tax fees variables
+    StringBuilder routeStr = new StringBuilder("[");
+    Set<String> continents = new LinkedHashSet<>();
+    int totalTaxFees = 0;
+    boolean firstCountry = true;
+
+    // iterate over the path, concatenate the route, continents, and calculate the total tax
+    // fees
+    for (Country country : path) {
+      // if the country is not the first country, add the tax fees to the total
+      if (!firstCountry) {
+        totalTaxFees += Integer.parseInt(country.getTaxFees());
+      }
+      firstCountry = false;
+
+      // append the country name to the route string
+      routeStr.append(country.getName());
+      if (!country.equals(destinationCountry)) {
+        routeStr.append(", ");
+      }
+
+      // add the continent to the set of continents
+      continents.add(country.getContinent());
+    }
+
+    routeStr.append("]");
+
+    // create a string representation of the continents
+    StringBuilder continentStr = new StringBuilder("[");
+    for (String continent : continents) {
+      continentStr.append(continent).append(", ");
+    }
+
+    if (continentStr.length() > 1) {
+      continentStr.setLength(continentStr.length() - 2);
+    }
+
+    continentStr.append("]");
+
+    // print the route, continents, and tax fees information
+    MessageCli.ROUTE_INFO.printMessage(routeStr.toString());
+    MessageCli.CONTINENT_INFO.printMessage(continentStr.toString());
+    MessageCli.TAX_INFO.printMessage(String.valueOf(totalTaxFees));
   }
 
-  private String getValidCountryInput (MessageCli promptMessage) {
+  private String getValidCountryInput(MessageCli promptMessage) {
     boolean validInput = false;
     String input = "";
 
@@ -149,7 +143,7 @@ public class MapEngine {
 
     return input;
   }
-  
+
   private boolean checkCountryValid(String countryName) throws InvalidCountryException {
     if (!countryMap.containsKey(countryName)) {
       throw new InvalidCountryException(MessageCli.INVALID_COUNTRY.getMessage(countryName));
