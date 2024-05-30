@@ -62,16 +62,13 @@ public class MapEngine {
         String capitalisedInput = Utils.capitalizeFirstLetterOfEachWord(input);
 
         // check if the country is valid, throw a custom exception if not
-        if (!countryMap.containsKey(capitalisedInput)) {
-          throw new InvalidCountryException(capitalisedInput);
-        }
-
+        validInput = checkCountryValid(capitalisedInput);
         input = capitalisedInput;
-        validInput = true;
 
       } catch (InvalidCountryException e) {
         // print the error message if the custom exception is thrown
-        MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
+        System.out.println(e.getMessage());
+        
       }
     }
 
@@ -97,15 +94,12 @@ public class MapEngine {
         String capitalisedInput = Utils.capitalizeFirstLetterOfEachWord(input);
 
         // check if the source country is valid, if not throw a custom exception
-        if (!countryMap.containsKey(capitalisedInput)) {
-          throw new InvalidCountryException(capitalisedInput);
-        }
-
+        sourceValidInput = checkCountryValid(capitalisedInput);
         source = capitalisedInput;
-        sourceValidInput = true;
+
       } catch (InvalidCountryException e) {
         // print the error message if the custom exception is thrown
-        MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
+        System.out.println(e.getMessage());
       }
     }
 
@@ -118,16 +112,12 @@ public class MapEngine {
         String capitalisedInput = Utils.capitalizeFirstLetterOfEachWord(input);
 
         // check if the destination country is valid, if not throw a custom exception
-        if (!countryMap.containsKey(capitalisedInput)) {
-          throw new InvalidCountryException(capitalisedInput);
-        }
-
+        destinationValidInput = checkCountryValid(capitalisedInput);
         destination = capitalisedInput;
-        destinationValidInput = true;
 
       } catch (InvalidCountryException e) {
         // print the error if the custom exception is thrown
-        MessageCli.INVALID_COUNTRY.printMessage(e.getMessage());
+        System.out.println(e.getMessage());
       }
     }
 
@@ -191,5 +181,13 @@ public class MapEngine {
         MessageCli.TAX_INFO.printMessage(String.valueOf(totalTaxFees));
       }
     }
+  }
+
+  private boolean checkCountryValid(String countryName) throws InvalidCountryException {
+    if (!countryMap.containsKey(countryName)) {
+      throw new InvalidCountryException(MessageCli.INVALID_COUNTRY.getMessage(countryName));
+    }
+
+    return true;
   }
 }
