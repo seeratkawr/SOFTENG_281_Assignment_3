@@ -13,6 +13,7 @@ public class MapEngine {
   private Map<String, Country> countryMap = new HashMap<>();
   private List<Country> countries = new ArrayList<>();
 
+  /** This is the constructor of the MapEngine class. */
   public MapEngine() {
     // add other code here if you want
     loadMap(); // keep this mehtod invocation
@@ -119,7 +120,14 @@ public class MapEngine {
     MessageCli.TAX_INFO.printMessage(String.valueOf(totalTaxFees));
   }
 
+  /**
+   * This method is used to get a valid country input from the user.
+   *
+   * @param promptMessage the message to prompt the user
+   * @returns the valid country input
+   */
   private String getValidCountryInput(MessageCli promptMessage) {
+    // initialise the variables
     boolean validInput = false;
     String input = "";
 
@@ -144,6 +152,13 @@ public class MapEngine {
     return input;
   }
 
+  /**
+   * This method is used to check if a country is valid.
+   *
+   * @param countryName the name of the country
+   * @returns true if the country is valid
+   * @throws InvalidCountryException if the country is invalid
+   */
   private boolean checkCountryValid(String countryName) throws InvalidCountryException {
     if (!countryMap.containsKey(countryName)) {
       throw new InvalidCountryException(MessageCli.INVALID_COUNTRY.getMessage(countryName));
