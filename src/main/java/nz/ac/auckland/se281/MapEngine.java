@@ -50,27 +50,7 @@ public class MapEngine {
 
   /** this method is invoked when the user run the command info-country. */
   public void showInfoCountry() {
-    boolean validInput = false;
-    String input = "";
-
-    // validate the input
-    while (!validInput) {
-      try {
-        // ask the user to enter the country name and read it from the console
-        MessageCli.INSERT_COUNTRY.printMessage();
-        input = Utils.scanner.nextLine();
-        String capitalisedInput = Utils.capitalizeFirstLetterOfEachWord(input);
-
-        // check if the country is valid, throw a custom exception if not
-        validInput = checkCountryValid(capitalisedInput);
-        input = capitalisedInput;
-
-      } catch (InvalidCountryException e) {
-        // print the error message if the custom exception is thrown
-        System.out.println(e.getMessage());
-        
-      }
-    }
+    String input = getValidCountryInput(MessageCli.INSERT_COUNTRY);
 
     // get the country object from the map and print its information
     Country country = countryMap.get(input);
@@ -80,46 +60,8 @@ public class MapEngine {
 
   /** this method is invoked when the user run the command route. */
   public void showRoute() {
-    boolean sourceValidInput = false;
-    String source = "";
-    boolean destinationValidInput = false;
-    String destination = "";
-
-    // validate the source country input
-    while (!sourceValidInput) {
-      try {
-        // ask the user to enter the source country name and read it from the console
-        MessageCli.INSERT_SOURCE.printMessage();
-        String input = Utils.scanner.nextLine();
-        String capitalisedInput = Utils.capitalizeFirstLetterOfEachWord(input);
-
-        // check if the source country is valid, if not throw a custom exception
-        sourceValidInput = checkCountryValid(capitalisedInput);
-        source = capitalisedInput;
-
-      } catch (InvalidCountryException e) {
-        // print the error message if the custom exception is thrown
-        System.out.println(e.getMessage());
-      }
-    }
-
-    // validate the destination country input
-    while (!destinationValidInput) {
-      try {
-        // ask the user to enter the destination country name and read it from the console
-        MessageCli.INSERT_DESTINATION.printMessage();
-        String input = Utils.scanner.nextLine();
-        String capitalisedInput = Utils.capitalizeFirstLetterOfEachWord(input);
-
-        // check if the destination country is valid, if not throw a custom exception
-        destinationValidInput = checkCountryValid(capitalisedInput);
-        destination = capitalisedInput;
-
-      } catch (InvalidCountryException e) {
-        // print the error if the custom exception is thrown
-        System.out.println(e.getMessage());
-      }
-    }
+    String source = getValidCountryInput(MessageCli.INSERT_SOURCE);
+    String destination = getValidCountryInput(MessageCli.INSERT_DESTINATION);
 
     // check if the source and destination countries are the same
     if (source.equals(destination)) {
@@ -183,6 +125,31 @@ public class MapEngine {
     }
   }
 
+  private String getValidCountryInput (MessageCli promptMessage) {
+    boolean validInput = false;
+    String input = "";
+
+    // validate the input
+    while (!validInput) {
+      try {
+        // ask the user to enter the country name and read it from the console
+        promptMessage.printMessage();
+        input = Utils.scanner.nextLine();
+        String capitalisedInput = Utils.capitalizeFirstLetterOfEachWord(input);
+
+        // check if the country is valid, throw a custom exception if not
+        validInput = checkCountryValid(capitalisedInput);
+        input = capitalisedInput;
+
+      } catch (InvalidCountryException e) {
+        // print the error message if the custom exception is thrown
+        System.out.println(e.getMessage());
+      }
+    }
+
+    return input;
+  }
+  
   private boolean checkCountryValid(String countryName) throws InvalidCountryException {
     if (!countryMap.containsKey(countryName)) {
       throw new InvalidCountryException(MessageCli.INVALID_COUNTRY.getMessage(countryName));
