@@ -1,6 +1,5 @@
 package nz.ac.auckland.se281;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.Set;
 public class MapEngine {
   private Graph graph = new Graph();
   private Map<String, Country> countryMap = new HashMap<>();
-  private List<Country> countries = new ArrayList<>();
 
   /** This is the constructor of the MapEngine class. */
   public MapEngine() {
@@ -34,7 +32,6 @@ public class MapEngine {
 
       Country country = new Country(countryName, continent, taxFees);
       countryMap.put(countryName, country);
-      this.countries.add(country);
     }
 
     // add the adjacencies to the graph
@@ -61,18 +58,18 @@ public class MapEngine {
 
   /** this method is invoked when the user run the command route. */
   public void showRoute() {
-    String source = getValidCountryInput(MessageCli.INSERT_SOURCE);
-    String destination = getValidCountryInput(MessageCli.INSERT_DESTINATION);
+    String sourceInput = getValidCountryInput(MessageCli.INSERT_SOURCE);
+    String destinationInput = getValidCountryInput(MessageCli.INSERT_DESTINATION);
 
     // check if the source and destination countries are the same
-    if (source.equals(destination)) {
+    if (sourceInput.equals(destinationInput)) {
       MessageCli.NO_CROSSBORDER_TRAVEL.printMessage();
       return;
     }
 
     // get the source and destination country objects from the map and find the shortest path
-    Country sourceCountry = countryMap.get(source);
-    Country destinationCountry = countryMap.get(destination);
+    Country sourceCountry = countryMap.get(sourceInput);
+    Country destinationCountry = countryMap.get(destinationInput);
     List<Country> path = graph.getShortestPath(sourceCountry, destinationCountry);
 
     // initialise the route string, continents set, and total tax fees variables
