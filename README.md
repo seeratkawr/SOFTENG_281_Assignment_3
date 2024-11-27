@@ -1,11 +1,19 @@
-# Assignment 3
+# Routing Application
+The Routing Application is a Java-based application designed to manage and query country data. It uses Breadth-First Search (BFS) and Graph data structures to optimise global delivery routes. The system calculates the shortest path and cross-border taxes between countries, ensuring efficient and cost effective routing decisions
 
-A Graph is the perfect data structure to model a map. In this case, countries are the nodes (vertices) of the graph. The graph will have 42 nodes. The edges in the map represent the “neighborhood” relation. For example, Brazil has Venezuela, North Africa, Argentina, and Peru as neighboring countries. Thus, Brazil will have an edge to the nodes of the graph that represent those countries. For example, there is no edge between India and Siberia because they are not adjacent countries (do not share a border or have a link via water). This relation is clearly symmetric: if country A is a neighbor of country B, then country B must also be a neighbor of country A.
+## Features
+* Create and manage country maps
+* Query country information
+* Find the shortest paths between two countries using BFS algorithm
+* Handle exceptions for country-related operations
+* Command-line interface for user interaction
 
-By traversing the resulting Graph, we can simulate routing across countries. For example, to go from Congo to Brazil, a possible path is Congo -> North Africa -> Brazil. We cannot jump from Congo to Brazil because these two countries are not adjacent; we must go through North Africa.
+## Installation
+To run this project, ensure you have Java installed on your machine. Follow the steps below to set up and run the project
+1. Clone the repository: `git clone https://github.com/your-username/routing-application.git`
+2. Navigate to the project directory on your computer: `cd routing-system`
+3. Compile the Java files: `javac *.java`
+4. Run the main application: `java Main`
 
-What you need to implement for A3 is the code to load the map into a graph and print the shortest path between two countries.
-
-Additionally, you can notice that in the Risk map, each country has an associated number. In the Risk game, these numbers are used for reinforcement bonuses. In this assignment, we are using those numbers to specify the taxes that need to be paid to cross the border. For example, the total taxes to pay from Congo to Brazil are: 5 (for North Africa) and 2 (for Brazil), totaling 7 NZD. We don’t need to pay the 1 NZD for Congo because we start from there.
-
-This assignment simulates a real case scenario where a company offering international delivery wants to implement software to find the optimal routing across the world. The map would be more complex, but they will definitely use a Graph data structure.
+## Usage
+After running the application, follow the on-screen prompts. The application provides a command-line interface for interaction
